@@ -60,20 +60,30 @@ st.write(
     ' columns')
 st.dataframe(df_selected_sector)
 
-# download S&P500 data
-def filedownload(df):
-    # converts the dataframe to a str
-    csv = df.to_csv(index=False)
-    # print(csv[:300])
+# # download S&P500 data
+# def filedownload(df):
+#     # converts the dataframe to a str
+#     csv = df.to_csv(index=False)
+#     # print(csv[:300])
 
-    # csv.encode() converts the str to binary string
-    # base64.b64encode() converts the str to base64 encoding
-    b64 = base64.b64encode(csv.encode()).decode()
+#     # csv.encode() converts the str to binary string
+#     # base64.b64encode() converts the str to base64 encoding
+#     b64 = base64.b64encode(csv.encode()).decode()
 
-    href = f'<a href="data:file/csv;base64,{b64}" download="SP500.csv">Download CSV File</a>'
-    return href
+#     href = f'<a href="data:file/csv;base64,{b64}" download="SP500.csv">Download CSV File</a>'
+#     return href
 
-st.markdown(filedownload(df_selected_sector), unsafe_allow_html=True)
+# st.markdown(filedownload(df_selected_sector), unsafe_allow_html=True)
+
+# trying out the streamlit download button
+# this removes the need to html
+csv = df_selected_sector.to_csv(index=False).encode('utf-8')
+# b64 = base64.b64encode(csv).decode()
+st.download_button(
+    label='Download data as CSV',
+    data=csv,
+    file_name='large_df.csv',
+    mime='text/csv')
 
 # download data from yfinance about selected sectors
 data = yf.download(
